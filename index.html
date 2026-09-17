@@ -1,0 +1,81 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#111315" />
+  <title>Omerta Focus Timer</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <main class="app">
+    <header>
+      <div class="brand">
+        <span class="brand-dot"></span>
+        <span>OMERTA FOCUS TIMER</span>
+      </div>
+      <div class="header-actions">
+        <button id="fullscreenToggle" class="icon-btn" type="button" aria-label="Enter fullscreen" title="Enter fullscreen">⛶</button>
+        <button id="themeToggle" class="icon-btn" type="button" aria-label="Switch to light mode" title="Switch to light mode">☀</button>
+      </div>
+    </header>
+
+    <section class="wake-row">
+      <div>
+        <div class="wake-title"><span id="wakeStatus" class="status-dot"></span> Keep Screen On</div>
+        <p id="wakeHint">Prevent your display from sleeping while you study.</p>
+      </div>
+      <label class="switch" aria-label="Keep screen on">
+        <input id="wakeToggle" type="checkbox">
+        <span class="slider"></span>
+      </label>
+    </section>
+
+    <section class="clock-wrap" aria-label="Analog clock">
+      <div class="clock">
+        <div class="markings" aria-hidden="true">
+          <span style="--i:0"></span><span style="--i:1"></span>
+          <span style="--i:2"></span><span style="--i:3"></span>
+          <span style="--i:4"></span><span style="--i:5"></span>
+          <span style="--i:6"></span><span style="--i:7"></span>
+          <span style="--i:8"></span><span style="--i:9"></span>
+          <span style="--i:10"></span><span style="--i:11"></span>
+        </div>
+        <div id="hourHand" class="hand hour"></div>
+        <div id="minuteHand" class="hand minute"></div>
+        <div id="secondHand" class="hand second"></div>
+        <div class="pin"></div>
+      </div>
+    </section>
+
+    <section class="timer">
+      <div class="mode">FOCUS SESSION</div>
+      <div id="timerDisplay" class="time" aria-live="polite">25:00</div>
+
+      <div class="presets" aria-label="Timer presets">
+        <button data-minutes="25" class="preset active">25</button>
+        <button data-minutes="45" class="preset">45</button>
+        <button data-minutes="60" class="preset">60</button>
+        <div class="custom">
+          <input id="customMinutes" type="number" min="1" max="999" placeholder="min" aria-label="Custom minutes">
+          <button id="setCustom">Set</button>
+        </div>
+      </div>
+
+      <div class="actions">
+        <button id="startBtn" class="primary">Start</button>
+        <button id="resetBtn" class="secondary">Reset</button>
+      </div>
+      <p id="timerMessage" class="message" aria-live="polite"></p>
+    </section>
+
+    <footer>
+      Developed by <strong>Omerta</strong>
+      <span>•</span>
+      <a href="https://github.com/haytham-hammioui" target="_blank" rel="noopener noreferrer">GitHub ↗</a>
+    </footer>
+  </main>
+
+  <script src="app.js"></script>
+</body>
+</html>
