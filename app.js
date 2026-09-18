@@ -124,32 +124,78 @@ $("#setCustom").addEventListener("click", () => {
   timerMessage.textContent = ""; renderTimer();
 });
 
+let wakeHintTimer = null;
+let wakeLockWanted = false;
+
+function showWakeHint(message) {
+  clearTimeout(wakeHintTimer);
+  wakeHint.textContent = message;
+  wakeHint.classList.remove("hidden");
+  wakeHintTimer = setTimeout(() => wakeHint.classList.add("hidden"), 10000);
+}
+
+function setWakeIndicator(active) {
+  wakeStatus.classList.toggle("on", active);
+}
+
 async function requestWakeLock() {
+  wakeLockWanted = true;
+
   if (!("wakeLock" in navigator)) {
+    wakeLockWanted = false;
     wakeToggle.checked = false;
-    wakeHint.textContent = "Wake Lock is not supported by this browser.";
+    setWakeIndicator(false);
+    showWakeHint("Wake Lock is not supported by this browser.");
     return;
   }
+
+  if (document.visibilityState !== "visible") return;
+
   try {
+    if (wakeLock && !wakeLock.released) {
+      setWakeIndicator(true);
+      return;
+    }
+
     wakeLock = await navigator.wakeLock.request("screen");
-    wakeStatus.classList.add("on");
-    wakeHint.textContent = "Screen will stay awake while this page is visible.";
-    wakeLock.addEventListener("release", () => wakeStatus.classList.remove("on"));
+    setWakeIndicator(true);
+    showWakeHint("Screen will stay awake while this page is visible.");
+
+    wakeLock.addEventListener("release", () => {
+      wakeLock = null;
+      setWakeIndicator(false);
+    }, { once: true });
   } catch (err) {
-    wakeToggle.checked = false;
-    wakeStatus.classList.remove("on");
-    wakeHint.textContent = "Could not keep the screen awake.";
+    wakeLock = null;
+    setWakeIndicator(false);
+    if (document.visibilityState === "visible") {
+      wakeLockWanted = false;
+      wakeToggle.checked = false;
+      showWakeHint("Could not keep the screen awake.");
+    }
   }
 }
+
 async function releaseWakeLock() {
-  if (wakeLock) { await wakeLock.release(); wakeLock = null; }
-  wakeStatus.classList.remove("on");
-  wakeHint.textContent = "Prevent your display from sleeping while you study.";
+  wakeLockWanted = false;
+  if (wakeLock && !wakeLock.released) {
+    try { await wakeLock.release(); } catch (_) {}
+  }
+  wakeLock = null;
+  setWakeIndicator(false);
+  showWakeHint("Keep Screen On disabled.");
 }
-wakeToggle.addEventListener("change", () => wakeToggle.checked ? requestWakeLock() : releaseWakeLock());
-document.addEventListener("visibilitychange", () => {
-  if (document.visibilityState === "visible" && wakeToggle.checked && !wakeLock) requestWakeLock();
+
+wakeToggle.addEventListener("change", () => {
+  if (wakeToggle.checked) requestWakeLock();
+  else releaseWakeLock();
 });
+
+document.addEventListener("visibilitychange", () => {
+  if (document.visibilityState === "visible" && wakeLockWanted && wakeToggle.checked)
+    requestWakeLock();
+});
+
 document.addEventListener("keydown", (event) => {
   if (event.key.toLowerCase() === "f" && !event.ctrlKey && !event.metaKey && !event.altKey && event.target.tagName !== "INPUT") {
     event.preventDefault();

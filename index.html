@@ -15,7 +15,6 @@
         <span>OMERTA FOCUS TIMER</span>
       </div>
       <div class="header-actions">
-        <button id="fullscreenToggle" class="icon-btn" type="button" aria-label="Enter fullscreen" title="Enter fullscreen">⛶</button>
         <button id="themeToggle" class="icon-btn" type="button" aria-label="Switch to light mode" title="Switch to light mode">☀</button>
       </div>
     </header>
@@ -32,7 +31,8 @@
     </section>
 
     <section class="clock-wrap" aria-label="Analog clock">
-      <div class="clock">
+      <div class="clock-stage">
+        <div class="clock">
         <div class="markings" aria-hidden="true">
           <span style="--i:0"></span><span style="--i:1"></span>
           <span style="--i:2"></span><span style="--i:3"></span>
@@ -45,6 +45,8 @@
         <div id="minuteHand" class="hand minute"></div>
         <div id="secondHand" class="hand second"></div>
         <div class="pin"></div>
+        </div>
+        <button id="fullscreenToggle" class="icon-btn fullscreen-clock-btn" type="button" aria-label="Enter fullscreen" title="Enter fullscreen">⛶</button>
       </div>
     </section>
 

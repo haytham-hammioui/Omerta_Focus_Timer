@@ -165,3 +165,47 @@ body.fullscreen .clock-wrap::after {
   .clock-wrap { padding-top:18px; }
   .actions button { min-width:112px; }
 }
+
+/* Updated wake-lock feedback */
+.wake-row p {
+  transition: opacity .25s ease, max-height .25s ease, margin .25s ease;
+  max-height: 40px;
+}
+.wake-row p.hidden {
+  opacity: 0;
+  max-height: 0;
+  margin: 0;
+  overflow: hidden;
+}
+
+/* Fullscreen button beside the analog clock */
+.clock-stage {
+  position: relative;
+  width: min(410px, 92vw);
+  display: grid;
+  place-items: center;
+}
+.fullscreen-clock-btn {
+  position: absolute;
+  right: 0;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+/* Extra space between clock and Focus Session */
+.clock-wrap { padding-bottom: 52px; }
+.timer { padding-top: 24px; }
+
+body.fullscreen .fullscreen-clock-btn { display: none; }
+body.fullscreen .clock-stage { width: auto; }
+
+@media (max-width: 520px) {
+  .clock-stage { width: 100%; }
+  .fullscreen-clock-btn {
+    right: 2px;
+    top: auto;
+    bottom: -8px;
+    transform: none;
+  }
+  .clock-wrap { padding-bottom: 58px; }
+}
